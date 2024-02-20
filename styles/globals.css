@@ -11,16 +11,90 @@ a {
   text-decoration: none;
 }
 
+p {
+  margin-block-start: 0em;
+  margin-block-end: 0.2em;
+}
+
 * {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+.topbar {
+  /* height: 9; */
+  top: 0;
+  position: fixed;
+  z-index: 1000;
+}
+
+.container {
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar {
+  width: 95%;
+}
+
+.container .navbar h3 {
+  margin-block-end: 0.5em;
+  color: #212121;
+}
+
+.search-bar, input:active {
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid black;
+  font-size: 1.3rem;
+  outline: none;
+}
+
+.hr-line {
+  color: #f0f0f0;
+  height: 5;
+}
+
+input:focus, input:active, input:hover {
+  color: #878787;
+}
+
+.box {
+  width: 95%;
+  border: 2px solid red;
+  height: 5.5rem;
+  display: flex;
+  padding: 0.5rem;
+}
+
+.logo {
+  height: 60px;
+  width: 60px;
+  border: 1px solid green;
+  border-radius: 100px;
+}
+
+.container .box .message-info {
+  margin-left: 2rem;
+  width: 95%;
+}
+
+.container .box .message-info .title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.h-primary {
+  color: #000000;
+}
+
+.h-secondary {
+  color: #878787;
+}
+
+.content {
+  margin-top: 93px;
+  overflow-y: auto;
+  height: calc(100vh - 93px);
 }
