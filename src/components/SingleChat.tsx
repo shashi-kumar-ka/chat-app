@@ -11,13 +11,25 @@ interface Props {
 const SingleChat = ({ chat, details, setChat }: Props) => {
   const [newMessage, setNewMessage] = useState("");
 
-  const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log(newMessage);
-    e.preventDefault(); // Prevent default form submission behavior
-    if (newMessage.trim()) {
+  const sendMessage = (e: React.FormEvent<HTMLFormElement>, selectedOption: string | undefined) => {
+    e.preventDefault(); 
+    let messageToSend = newMessage.trim(); 
+  
+    switch (selectedOption) {
+      case "Request a call":
+        messageToSend = "I want a callback";
+        break;
+      case "Go to My Orders":
+        messageToSend = "I want to check my orders";
+        break;
+      default:
+        break;
+    }
+  
+    if (messageToSend) {
       const newMessageObject: Message = {
         messageId: String(new Date().getTime()),
-        message: newMessage,
+        message: messageToSend,
         timestamp: new Date().getTime(),
         sender: "USER",
         messageType: "text",
@@ -28,7 +40,6 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
       setNewMessage("");
     }
   };
-  
 
   const setTime = (timestamp: number) => {
     const date = new Date(timestamp);
@@ -73,15 +84,16 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
   ) => {
     return (
       <div className="options">
-        {options.map((option, index) => (
-          <button key={index} className="option flex flex-col">
-            <p className="blue ">{option.optionText}</p>
-            {option.optionSubText && (
-              <div className="subtext">{option.optionSubText}</div>
-            )}
-          </button>
-        ))}
-      </div>
+  {options.map((option, index) => (
+    <button key={index} className="option flex flex-col" onClick={(e) => sendMessage(e, option.optionText)}>
+      <p className="blue ">{option.optionText}</p>
+      {option.optionSubText && (
+        <div className="subtext">{option.optionSubText}</div>
+      )}
+    </button>
+  ))}
+</div>
+
     );
   };
 
@@ -108,6 +120,8 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
                 message.sender === "USER" ? "justify-end" : "justify-start"
               }`}
             >
+              
+              {/* {setDate(message.timestamp)} */}
               {message.messageType === "optionedMessage" ? (
                 <div className="option-box rounded-lg-2">
                   <p className="text-sx">{message.message}</p>
