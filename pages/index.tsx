@@ -119,6 +119,7 @@ const Home = () => {
                 chats={chats}
                 chat={chat}
                 onChatSelect={handleChatClick}
+                isSelected={false}
               />
             ))}
           </div>
