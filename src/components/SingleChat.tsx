@@ -12,7 +12,9 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
   const [newMessage, setNewMessage] = useState("");
 
   const sendMessage = (
-    e: React.FormEvent<HTMLFormElement>,
+    e:
+      | React.FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>,
     selectedOption: string | undefined
   ) => {
     e.preventDefault();
@@ -47,6 +49,11 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
     }
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    sendMessage(e, "");
+  };
+
   const setTime = (timestamp: number) => {
     const date = new Date(timestamp);
     const hours = date.getHours();
@@ -70,12 +77,12 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
     const currentMonth = currentDate.getMonth();
     const messageYear = messageDate.getFullYear();
     const currentYear = currentDate.getFullYear();
-  
+
     if (messageYear === currentYear && messageMonth === currentMonth) {
       if (messageDay === currentDay) {
-        return 'Today';
+        return "Today";
       } else if (messageDay === currentDay - 1) {
-        return 'Yesterday';
+        return "Yesterday";
       } else {
         return `${messageDay}/${messageMonth + 1}/${messageYear}`;
       }
@@ -90,7 +97,10 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
           acc.push(curr);
         } else {
           const lastMessage = acc[acc.length - 1];
-          if (formatTimestamp(curr.timestamp) !== formatTimestamp(lastMessage.timestamp)) {
+          if (
+            formatTimestamp(curr.timestamp) !==
+            formatTimestamp(lastMessage.timestamp)
+          ) {
             const dateLabel: Message = {
               messageId: String(new Date().getTime()),
               message: formatTimestamp(curr.timestamp),
@@ -104,7 +114,7 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
         }
         return acc;
       }, []);
-  
+
       setFormattedChat(formatted);
     } else {
       setFormattedChat([]); // to clear the chat while switching to different chats
@@ -155,11 +165,13 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
                 message.sender === "USER" ? "justify-end" : "justify-start"
               }`}
             >
-              <div className="flex items-center justify-center">{formatTimestamp(message.timestamp)}</div>
-              {message.messageType === "optionedMessage" ? (
+              <div className="flex items-center justify-center">
+                {/* {formatTimestamp(message.timestamp)} */}
+              </div>
+              {message.messageType === "optionedMessage" && message.options ? (
                 <div className="option-box rounded-lg-2">
                   <p className="text-sx">{message.message}</p>
-                  {renderOptions(message?.options)}
+                  {renderOptions(message.options)}
                 </div>
               ) : (
                 <div
@@ -184,7 +196,7 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
         )}
       </div>
       <form
-        onSubmit={sendMessage}
+        onSubmit={handleSubmit}
         className="p-4 bottom-0 w-50 flex bg-gray-200"
       >
         <input
