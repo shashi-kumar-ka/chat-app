@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Option, Message, Details } from "./chat";
+import { Message, Details } from "./chat";
 import Image from "next/image";
 
 interface Props {
@@ -11,10 +11,13 @@ interface Props {
 const SingleChat = ({ chat, details, setChat }: Props) => {
   const [newMessage, setNewMessage] = useState("");
 
-  const sendMessage = (e: React.FormEvent<HTMLFormElement>, selectedOption: string | undefined) => {
-    e.preventDefault(); 
-    let messageToSend = newMessage.trim(); 
-  
+  const sendMessage = (
+    e: React.FormEvent<HTMLFormElement>,
+    selectedOption: string | undefined
+  ) => {
+    e.preventDefault();
+    let messageToSend = newMessage.trim();
+
     switch (selectedOption) {
       case "Request a call":
         messageToSend = "I want a callback";
@@ -25,7 +28,7 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
       default:
         break;
     }
-  
+
     if (messageToSend) {
       const newMessageObject: Message = {
         messageId: String(new Date().getTime()),
@@ -34,9 +37,12 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
         sender: "USER",
         messageType: "text",
       };
-  
+
       setChat((prevChat) => [...prevChat, newMessageObject]);
-      setFormattedChat((prevFormattedChat) => [...prevFormattedChat, newMessageObject]);
+      setFormattedChat((prevFormattedChat) => [
+        ...prevFormattedChat,
+        newMessageObject,
+      ]);
       setNewMessage("");
     }
   };
@@ -55,6 +61,28 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
 
   const [formattedChat, setFormattedChat] = useState<Message[]>([]);
 
+  const formatTimestamp = (timestamp: number): string => {
+    const messageDate = new Date(timestamp);
+    const currentDate = new Date();
+    const messageDay = messageDate.getDate();
+    const currentDay = currentDate.getDate();
+    const messageMonth = messageDate.getMonth();
+    const currentMonth = currentDate.getMonth();
+    const messageYear = messageDate.getFullYear();
+    const currentYear = currentDate.getFullYear();
+  
+    if (messageYear === currentYear && messageMonth === currentMonth) {
+      if (messageDay === currentDay) {
+        return 'Today';
+      } else if (messageDay === currentDay - 1) {
+        return 'Yesterday';
+      } else {
+        return `${messageDay}/${messageMonth + 1}/${messageYear}`;
+      }
+    }
+    return `${messageDay}/${messageMonth + 1}/${messageYear}`;
+  };
+
   useEffect(() => {
     if (chat?.length > 0) {
       const formatted = chat.reduce((acc: Message[], curr: Message) => {
@@ -62,17 +90,21 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
           acc.push(curr);
         } else {
           const lastMessage = acc[acc.length - 1];
-          const timeDifference =
-            (curr.timestamp - lastMessage.timestamp) / 1000;
-          if (timeDifference < 60) {
-            lastMessage.message += `\n${curr.message}`;
-          } else {
-            acc.push(curr);
+          if (formatTimestamp(curr.timestamp) !== formatTimestamp(lastMessage.timestamp)) {
+            const dateLabel: Message = {
+              messageId: String(new Date().getTime()),
+              message: formatTimestamp(curr.timestamp),
+              timestamp: curr.timestamp,
+              sender: "USER",
+              messageType: "text",
+            };
+            acc.push(dateLabel);
           }
+          acc.push(curr);
         }
         return acc;
       }, []);
-
+  
       setFormattedChat(formatted);
     } else {
       setFormattedChat([]); // to clear the chat while switching to different chats
@@ -84,16 +116,19 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
   ) => {
     return (
       <div className="options">
-  {options.map((option, index) => (
-    <button key={index} className="option flex flex-col" onClick={(e) => sendMessage(e, option.optionText)}>
-      <p className="blue ">{option.optionText}</p>
-      {option.optionSubText && (
-        <div className="subtext">{option.optionSubText}</div>
-      )}
-    </button>
-  ))}
-</div>
-
+        {options.map((option, index) => (
+          <button
+            key={index}
+            className="option flex flex-col"
+            onClick={(e) => sendMessage(e, option.optionText)}
+          >
+            <p className="blue ">{option.optionText}</p>
+            {option.optionSubText && (
+              <div className="subtext">{option.optionSubText}</div>
+            )}
+          </button>
+        ))}
+      </div>
     );
   };
 
@@ -120,8 +155,7 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
                 message.sender === "USER" ? "justify-end" : "justify-start"
               }`}
             >
-              
-              {/* {setDate(message.timestamp)} */}
+              <div className="flex items-center justify-center">{formatTimestamp(message.timestamp)}</div>
               {message.messageType === "optionedMessage" ? (
                 <div className="option-box rounded-lg-2">
                   <p className="text-sx">{message.message}</p>
@@ -161,7 +195,6 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
           className="w-80 p-2 border rounded-md"
         />
         <button
-          //   onClick={sendMessage}
           type="submit"
           className="px-4 py-2 bg-blue-500 text-white rounded-md ml-2 w-20"
         >

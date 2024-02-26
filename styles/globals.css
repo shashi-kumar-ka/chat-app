@@ -365,8 +365,7 @@ input:focus, input:active, input:hover {
 }
 
 .max-w-30 {
-  height: 90vh;
-  /* max-height: calc(100vh-50px); */
+  height: 80vh;
 }
 
 .option-box {
@@ -414,3 +413,4 @@ button {
 .justify-center {
   justify-content: center;
 }
+
