@@ -15,10 +15,6 @@ const Home = () => {
   const { id } = router.query;
   const [chat, setChat] = useState<Message[]>([]);
 
-  useEffect(() => {
-    console.log(chat);
-  },[chat]);
-
   const [selectedChat, setSelectedChat] = useState<Details | null>(null);
   const [search, setSearch] = useState("");
 
@@ -32,8 +28,6 @@ const Home = () => {
         console.error("Error fetching chats: ", error);
       });
   }, [dispatch]);
-
-  useEffect(() => {}, [chat]);
 
   useEffect(() => {
     if (id) {
@@ -53,6 +47,7 @@ const Home = () => {
 
   const handleChatClick = (chat: Details) => {
     setSelectedChat(chat);
+    // (chat) => router.push(`/?id=${chat.id}`)
   };
 
   return (
@@ -124,7 +119,7 @@ const Home = () => {
                 key={chat.id}
                 chats={chats}
                 chat={chat}
-                onChatSelect={handleChatClick}
+                onChatSelect={(chat) => router.push(`/?id=${chat.id}`)}
                 isSelected={false}
               />
             ))}
