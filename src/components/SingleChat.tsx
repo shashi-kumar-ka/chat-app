@@ -46,11 +46,6 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
       };
 
       dispatch(addMessage({ chatId: details.id, message: newMessageObject }));
-      setChat((prevChat) => [...prevChat, newMessageObject]);
-      setFormattedChat((prevFormattedChat) => [
-        ...prevFormattedChat,
-        newMessageObject,
-      ]);
       setNewMessage("");
     }
   };
@@ -107,14 +102,6 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
             formatTimestamp(curr.timestamp) !==
             formatTimestamp(lastMessage.timestamp)
           ) {
-            const dateLabel: Message = {
-              messageId: String(new Date().getTime()),
-              message: formatTimestamp(curr.timestamp),
-              timestamp: curr.timestamp,
-              sender: "USER",
-              messageType: "text",
-            };
-            acc.push(dateLabel);
           }
           acc.push(curr);
         }
