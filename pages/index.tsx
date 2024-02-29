@@ -1,33 +1,39 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import ListItem from "../src/components/ListItem";
 import SingleChat from "../src/components/SingleChat";
 import { Message, Details } from "../src/components/chat";
+import { setChats, addMessage } from "../src/store/chatSlice";
+import { RootState } from "../src/store/store";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const chats = useSelector((state: RootState) => state.chats.chats);
+
   const router = useRouter();
   const { id } = router.query;
-  const [chats, setChats] = useState<Details[]>([]);
   const [chat, setChat] = useState<Message[]>([]);
+
+  useEffect(() => {
+    console.log(chat);
+  },[chat]);
 
   const [selectedChat, setSelectedChat] = useState<Details | null>(null);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://my-json-server.typicode.com/codebuds-fk/chat/chats"
-        );
-        setChats(response.data);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      }
-    };
+    fetch("https://my-json-server.typicode.com/codebuds-fk/chat/chats")
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch(setChats(data));
+      })
+      .catch((error) => {
+        console.error("Error fetching chats: ", error);
+      });
+  }, [dispatch]);
 
-    fetchData();
-  }, []);
+  useEffect(() => {}, [chat]);
 
   useEffect(() => {
     if (id) {

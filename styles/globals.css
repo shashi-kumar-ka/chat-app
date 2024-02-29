@@ -21,7 +21,6 @@ p {
 }
 
 .topbar {
-  /* height: 9; */
   top: 0;
   position: -webkit-sticky;
   position: sticky;
@@ -90,10 +89,6 @@ input:focus, input:active, input:hover {
   color: #878787;
 }
 
-/* .content1 {
-  width: 50vw;
-} */
-
 .box {
   width: 95%;
   /* border: 2px solid red; */
@@ -126,12 +121,6 @@ input:focus, input:active, input:hover {
 .h-secondary {
   color: #878787;
 }
-
-/* .content {
-  margin-top: 93px;
-  overflow-y: auto;
-  height: calc(100vh - 93px);
-} */
 
 .flex {
   display: flex;
@@ -246,10 +235,6 @@ input:focus, input:active, input:hover {
   background-color: rgb(209 213 219 / var(--tw-bg-opacity));
 }
 
-/* .w-66 {
-  width: 66.666667%;
-} */
-
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -277,10 +262,6 @@ input:focus, input:active, input:hover {
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity));
 }
-
-/* .relative {
-  width: 50%;
-} */
 
 .right-bar {
   width: 50%;
@@ -310,7 +291,7 @@ input:focus, input:active, input:hover {
   align-self: flex-start;
 }
 
-.chats:hover, .chats:active, .chats:focus {
+.chats:active, .chats:focus {
   background-color: #bebebe;
 }
 
@@ -369,7 +350,6 @@ input:focus, input:active, input:hover {
 }
 
 .option-box {
-  /* border: 2px solid red; */
   width: 40%;
   background-color: white;
 }
@@ -412,5 +392,24 @@ button {
 
 .justify-center {
   justify-content: center;
+}
+
+.disabled {
+  cursor: not-allowed;
+}
+
+.disabled-text {
+  opacity: 0.8;
+}
+
+.date-label {
+  font-size: 0.8rem;
+    font-weight: 500;
+    color: #616161;
+    border-radius: 25px;
+    margin: auto;
+    background: white;
+    padding: 0.25rem 1.25rem;
+    margin-bottom: 5px;
 }
 

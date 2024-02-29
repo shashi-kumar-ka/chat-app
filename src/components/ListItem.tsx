@@ -22,8 +22,30 @@ interface Chat {
 const ListItem = ({ chat, chats, isSelected, selectedChatId, onChatSelect }: ListItemProps) => {
     const lastMessage = chat.messageList[chat.messageList.length - 1];
 
-    const date = new Date(chat.latestMessageTimestamp)
-    const formattedDate = date.toLocaleDateString();
+    const formatTimestamp = (timestamp: number): string => {
+      if(timestamp == undefined) {
+        return '';
+      }
+      const messageDate = new Date(timestamp);
+      const currentDate = new Date();
+      const messageDay = messageDate.getDate();
+      const currentDay = currentDate.getDate();
+      const messageMonth = messageDate.getMonth();
+      const currentMonth = currentDate.getMonth();
+      const messageYear = messageDate.getFullYear();
+      const currentYear = currentDate.getFullYear();
+  
+      if (messageYear === currentYear && messageMonth === currentMonth) {
+        if (messageDay === currentDay) {
+          return "Today";
+        } else if (messageDay === currentDay - 1) {
+          return "Yesterday";
+        } else {
+          return `${messageDay}/${messageMonth + 1}/${messageYear}`;
+        }
+      }
+      return `${messageDay}/${messageMonth + 1}/${messageYear}`;
+    };
 
     const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
     useEffect(() => {
@@ -48,7 +70,7 @@ const ListItem = ({ chat, chats, isSelected, selectedChatId, onChatSelect }: Lis
                     <Image src={chat.imageURL} width={60} height={60} alt='' />
                 </div>
                 <div className="message-info">
-                    <div className="title"><p className='h-primary'>{chat.title}</p><p className='h-secondary'>{formattedDate}</p></div>
+                    <div className="title"><p className='h-primary'>{chat.title}</p><p className='h-secondary'>{formatTimestamp(lastMessage?.timestamp)}</p></div>
                     <p className='h-primary'>Order {chat.orderId}</p>
                     <p className='h-secondary'>{lastMessage?.message}</p>
                 </div>
@@ -60,4 +82,4 @@ const ListItem = ({ chat, chats, isSelected, selectedChatId, onChatSelect }: Lis
   )
 }
 
-export default ListItem
+export default ListItem;

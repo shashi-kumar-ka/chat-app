@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/store";
 import { Message, Details } from "./chat";
 import Image from "next/image";
+import { addMessage } from "../store/chatSlice";
 
 interface Props {
   chat: Message[];
@@ -9,6 +12,8 @@ interface Props {
 }
 
 const SingleChat = ({ chat, details, setChat }: Props) => {
+  const dispatch = useDispatch();
+  const chats = useSelector((state: RootState) => state.chats.chats);
   const [newMessage, setNewMessage] = useState("");
 
   const sendMessage = (
@@ -40,6 +45,7 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
         messageType: "text",
       };
 
+      dispatch(addMessage({ chatId: details.id, message: newMessageObject }));
       setChat((prevChat) => [...prevChat, newMessageObject]);
       setFormattedChat((prevFormattedChat) => [
         ...prevFormattedChat,
@@ -122,17 +128,25 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
   }, [chat]);
 
   const renderOptions = (
-    options: { optionText: string; optionSubText?: string }[]
+    options: { optionText: string; optionSubText?: string }[],
+    isLatestMessage: boolean
   ) => {
     return (
       <div className="options">
         {options.map((option, index) => (
           <button
-            key={index}
-            className="option flex flex-col"
-            onClick={(e) => sendMessage(e, option.optionText)}
+            key={`${option.optionText}_${index}`}
+            className={`option flex flex-col ${
+              !isLatestMessage ? "disabled" : ""
+            }`}
+            onClick={(e) =>
+              sendMessage(e, isLatestMessage ? option.optionText : undefined)
+            }
+            disabled={!isLatestMessage}
           >
-            <p className="blue ">{option.optionText}</p>
+            <p className={`blue ${!isLatestMessage ? "disabled-text" : ""}`}>
+              {option.optionText}
+            </p>
             {option.optionSubText && (
               <div className="subtext">{option.optionSubText}</div>
             )}
@@ -160,25 +174,34 @@ const SingleChat = ({ chat, details, setChat }: Props) => {
         {formattedChat.length > 0 ? (
           formattedChat.map((message, index) => (
             <div
-              key={message.messageId}
-              className={`flex items-center mb-2 ${
-                message.sender === "USER" ? "justify-end" : "justify-start"
+              key={`${message.messageId}_${message.timestamp}`}
+              className={`flex flex-col mb-2 ${
+                message.sender === "USER"
+                  ? "justify-end items-end"
+                  : "justify-start items-start"
               }`}
             >
-              <div className="flex items-center justify-center">
-                {/* {formatTimestamp(message.timestamp)} */}
-              </div>
+              {formatTimestamp(message.timestamp) !==
+                formatTimestamp(formattedChat[index - 1]?.timestamp) && (
+                <div className="date-label mt-2 flex items-center justify-center">
+                  {formatTimestamp(message.timestamp)}
+                </div>
+              )}
+
               {message.messageType === "optionedMessage" && message.options ? (
                 <div className="option-box rounded-lg-2">
                   <p className="text-sx">{message.message}</p>
-                  {renderOptions(message.options)}
+                  {renderOptions(
+                    message.options,
+                    index === formattedChat.length - 1
+                  )}
                 </div>
               ) : (
                 <div
                   className={`px-4 py-2 ${
                     message.sender === "USER"
-                      ? "bg-blue-500 text-white rounded-lg-1"
-                      : "bg-white text-gray-800 rounded-lg-2"
+                      ? "bg-blue-500 text-white rounded-lg-1 self-end"
+                      : "bg-white text-gray-800 rounded-lg-2 self-start"
                   }`}
                 >
                   {message.message}

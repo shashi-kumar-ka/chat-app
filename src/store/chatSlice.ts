@@ -1,37 +1,47 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Details, Message } from '../components/chat';
+import { createSlice } from "@reduxjs/toolkit";
+
+interface Message {
+  messageId: string;
+  message: string;
+  timestamp: number;
+  sender: string;
+  messageType: string;
+}
+
+interface Chat {
+  id: number;
+  title: string;
+  imageURL: string;
+  orderId: string;
+  latestMessageTimestamp: number;
+  messageList: Message[];
+}
 
 interface ChatState {
-  chats: Details[];
-  selectedChatId: number | null;
+  chats: Chat[];
 }
 
 const initialState: ChatState = {
   chats: [],
-  selectedChatId: null,
 };
 
 const chatSlice = createSlice({
-  name: 'chat',
+  name: "chat",
   initialState,
   reducers: {
-    setChats(state, action: PayloadAction<Details[]>) {
+    setChats: (state, action) => {
       state.chats = action.payload;
     },
-    selectChat(state, action: PayloadAction<number>) {
-      state.selectedChatId = action.payload;
-    },
-    addMessage(state, action: PayloadAction<{ chatId: number; message: Message }>) {
+    addMessage: (state, action) => {
       const { chatId, message } = action.payload;
-      const chatIndex = state.chats.findIndex(chat => chat.id === chatId);
-      if (chatIndex !== -1) {
-        state.chats[chatIndex].messageList.push(message);
+      const chat = state.chats.find((chat) => chat.id === chatId);
+      if (chat) {
+        chat.messageList.push(message);
       }
     },
   },
 });
 
-export const { setChats, selectChat, addMessage } = chatSlice.actions;
-
+export const { setChats, addMessage } = chatSlice.actions;
 export default chatSlice.reducer;
 
