@@ -72,7 +72,8 @@ p {
   color: #212121;
 }
 
-.search-bar, input:active {
+.search-bar,
+input:active {
   width: 100%;
   border: none;
   border-bottom: 2px solid black;
@@ -85,13 +86,14 @@ p {
   height: 5;
 }
 
-input:focus, input:active, input:hover {
+input:focus,
+input:active,
+input:hover {
   color: #878787;
 }
 
 .box {
   width: 95%;
-  /* border: 2px solid red; */
   height: 5.5rem;
   display: flex;
   padding: 0.5rem;
@@ -100,7 +102,6 @@ input:focus, input:active, input:hover {
 .logo {
   height: 60px;
   width: 60px;
-  /* border: 1px solid green; */
   border-radius: 100px;
 }
 
@@ -270,9 +271,8 @@ input:focus, input:active, input:hover {
 .h-screen {
   height: 100vh;
 }
-.w-screen{
+.w-screen {
   width: 100vw;
-
 }
 
 .items-end {
@@ -291,7 +291,8 @@ input:focus, input:active, input:hover {
   align-self: flex-start;
 }
 
-.chats:active, .chats:focus {
+.chats:active,
+.chats:focus {
   background-color: #bebebe;
 }
 
@@ -311,7 +312,7 @@ input:focus, input:active, input:hover {
   width: 85%;
 }
 
-.bg-white{
+.bg-white {
   background-color: white;
 }
 
@@ -330,7 +331,6 @@ input:focus, input:active, input:hover {
 
 .time {
   font-size: 0.7rem;
-
 }
 
 .rounded-lg-2 {
@@ -404,12 +404,11 @@ button {
 
 .date-label {
   font-size: 0.8rem;
-    font-weight: 500;
-    color: #616161;
-    border-radius: 25px;
-    margin: auto;
-    background: white;
-    padding: 0.25rem 1.25rem;
-    margin-bottom: 5px;
+  font-weight: 500;
+  color: #616161;
+  border-radius: 25px;
+  margin: auto;
+  background: white;
+  padding: 0.25rem 1.25rem;
+  margin-bottom: 5px;
 }
-

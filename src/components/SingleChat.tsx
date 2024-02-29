@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store/store";
+import { useDispatch } from "react-redux";
 import { Message, Details } from "./chat";
 import Image from "next/image";
 import { addMessage } from "../store/chatSlice";
@@ -8,12 +7,10 @@ import { addMessage } from "../store/chatSlice";
 interface Props {
   chat: Message[];
   details: Details;
-  setChat: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
-const SingleChat = ({ chat, details, setChat }: Props) => {
+const SingleChat = ({ chat, details }: Props) => {
   const dispatch = useDispatch();
-  const chats = useSelector((state: RootState) => state.chats.chats);
   const [newMessage, setNewMessage] = useState("");
 
   const sendMessage = (

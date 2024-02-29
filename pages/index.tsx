@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import ListItem from "../src/components/ListItem";
 import SingleChat from "../src/components/SingleChat";
-import { Message, Details } from "../src/components/chat";
-import { setChats, addMessage } from "../src/store/chatSlice";
+import { Details } from "../src/components/chat";
+import { setChats } from "../src/store/chatSlice";
 import { RootState } from "../src/store/store";
 
 const Home = () => {
@@ -13,7 +13,8 @@ const Home = () => {
 
   const router = useRouter();
   const { id } = router.query;
-  const [chat, setChat] = useState<Message[]>([]);
+  // const [chat, setChat] = useState<Message[]>([]);
+  // useEffect(() => {}, [chat]);
 
   const [selectedChat, setSelectedChat] = useState<Details | null>(null);
   const [search, setSearch] = useState("");
@@ -47,7 +48,6 @@ const Home = () => {
 
   const handleChatClick = (chat: Details) => {
     setSelectedChat(chat);
-    // (chat) => router.push(`/?id=${chat.id}`)
   };
 
   return (
@@ -91,7 +91,7 @@ const Home = () => {
               <SingleChat
                 chat={selectedChat.messageList}
                 details={selectedChat}
-                setChat={setChat}
+                // setChat={setChat}
               />
             )}
           </div>

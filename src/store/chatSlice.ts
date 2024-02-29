@@ -44,4 +44,3 @@ const chatSlice = createSlice({
 
 export const { setChats, addMessage } = chatSlice.actions;
 export default chatSlice.reducer;
-
