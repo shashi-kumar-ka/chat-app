@@ -13,8 +13,6 @@ const Home = () => {
 
   const router = useRouter();
   const { id } = router.query;
-  // const [chat, setChat] = useState<Message[]>([]);
-  // useEffect(() => {}, [chat]);
 
   const [selectedChat, setSelectedChat] = useState<Details | null>(null);
   const [search, setSearch] = useState("");
@@ -91,7 +89,6 @@ const Home = () => {
               <SingleChat
                 chat={selectedChat.messageList}
                 details={selectedChat}
-                // setChat={setChat}
               />
             )}
           </div>
