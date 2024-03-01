@@ -33,23 +33,43 @@ const ListItem = ({
     }
     const messageDate = new Date(timestamp);
     const currentDate = new Date();
-    const messageDay = messageDate.getDate();
-    const currentDay = currentDate.getDate();
-    const messageMonth = messageDate.getMonth();
-    const currentMonth = currentDate.getMonth();
+    const messageDay = messageDate.getDate().toString().padStart(2, "0"); // Ensure 2 digits with leading zero
+    const currentDay = currentDate.getDate().toString().padStart(2, "0"); // Ensure 2 digits with leading zero
+    const messageMonth = (messageDate.getMonth() + 1)
+      .toString()
+      .padStart(2, "0"); // Ensure 2 digits with leading zero
+    const currentMonth = (currentDate.getMonth() + 1)
+      .toString()
+      .padStart(2, "0"); // Ensure 2 digits with leading zero
     const messageYear = messageDate.getFullYear();
-    const currentYear = currentDate.getFullYear();
 
-    if (messageYear === currentYear && messageMonth === currentMonth) {
+    if (
+      messageYear === currentDate.getFullYear() &&
+      messageMonth === currentMonth
+    ) {
       if (messageDay === currentDay) {
         return "Today";
-      } else if (messageDay === currentDay - 1) {
+      } else if (
+        messageDay === (parseInt(currentDay) - 1).toString().padStart(2, "0")
+      ) {
         return "Yesterday";
       } else {
-        return `${messageDay}/${messageMonth + 1}/${messageYear}`;
+        return `${messageDay}/${messageMonth}/${messageYear}`;
       }
     }
-    return `${messageDay}/${messageMonth + 1}/${messageYear}`;
+
+    const yesterday = new Date(currentDate);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    if (
+      messageYear === yesterday.getFullYear() &&
+      messageMonth === (yesterday.getMonth() + 1).toString().padStart(2, "0") &&
+      messageDay === yesterday.getDate().toString().padStart(2, "0")
+    ) {
+      return "Yesterday";
+    }
+
+    return `${messageDay}/${messageMonth}/${messageYear}`;
   };
 
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
@@ -66,7 +86,7 @@ const ListItem = ({
     <>
       <div
         key={chat.id}
-        className={`p-4 cursor-pointer chats ${isSelected ? "bg-back" : ""}`}
+        className={`cursor-pointer chats ${isSelected ? "bg-back" : ""}`}
         onClick={() => onChatSelect(chat)}
       >
         <div className="data">
