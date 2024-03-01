@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { Message, Details } from "./chat";
 import Image from "next/image";
 import { addMessage } from "../store/chatSlice";
+import { RxCross2 } from "react-icons/rx";
+import { useRouter } from "next/router";
 
 interface Props {
   chat: Message[];
@@ -10,6 +12,7 @@ interface Props {
 }
 
 const SingleChat = ({ chat, details }: Props) => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const [newMessage, setNewMessage] = useState("");
 
@@ -72,14 +75,14 @@ const SingleChat = ({ chat, details }: Props) => {
     }
     const messageDate = new Date(timestamp);
     const currentDate = new Date();
-    const messageDay = messageDate.getDate().toString().padStart(2, "0"); // Ensure 2 digits with leading zero
-    const currentDay = currentDate.getDate().toString().padStart(2, "0"); // Ensure 2 digits with leading zero
+    const messageDay = messageDate.getDate().toString().padStart(2, "0");
+    const currentDay = currentDate.getDate().toString().padStart(2, "0");
     const messageMonth = (messageDate.getMonth() + 1)
       .toString()
-      .padStart(2, "0"); // Ensure 2 digits with leading zero
+      .padStart(2, "0");
     const currentMonth = (currentDate.getMonth() + 1)
       .toString()
-      .padStart(2, "0"); // Ensure 2 digits with leading zero
+      .padStart(2, "0");
     const messageYear = messageDate.getFullYear();
 
     if (
@@ -165,7 +168,7 @@ const SingleChat = ({ chat, details }: Props) => {
 
   return (
     <div className="bg-back h-screen">
-      <div className="topbar flex items-center h-96">
+      <div className="topbar flex items-center justify-between h-96">
         <Image
           className="ml-4"
           src={details?.imageURL}
@@ -176,6 +179,9 @@ const SingleChat = ({ chat, details }: Props) => {
         <h2 className="text-2xl font-semibold text-gray-800 ml-4">
           {details?.title}
         </h2>
+        <div className="mr-4">
+          <RxCross2 className="cancel cursor-pointer" onClick={() => router.push(`/`)} />
+        </div>
       </div>
       <div className="max-w-30 overflow-scroll p-4">
         {formattedChat.length > 0 ? (

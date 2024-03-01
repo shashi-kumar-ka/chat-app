@@ -33,14 +33,14 @@ const ListItem = ({
     }
     const messageDate = new Date(timestamp);
     const currentDate = new Date();
-    const messageDay = messageDate.getDate().toString().padStart(2, "0"); // Ensure 2 digits with leading zero
-    const currentDay = currentDate.getDate().toString().padStart(2, "0"); // Ensure 2 digits with leading zero
+    const messageDay = messageDate.getDate().toString().padStart(2, "0"); 
+    const currentDay = currentDate.getDate().toString().padStart(2, "0"); 
     const messageMonth = (messageDate.getMonth() + 1)
       .toString()
-      .padStart(2, "0"); // Ensure 2 digits with leading zero
+      .padStart(2, "0"); 
     const currentMonth = (currentDate.getMonth() + 1)
       .toString()
-      .padStart(2, "0"); // Ensure 2 digits with leading zero
+      .padStart(2, "0"); 
     const messageYear = messageDate.getFullYear();
 
     if (
