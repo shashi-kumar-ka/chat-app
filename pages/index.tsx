@@ -6,6 +6,7 @@ import SingleChat from "../src/components/SingleChat";
 import { Details } from "../src/components/chat";
 import { setChats } from "../src/store/chatSlice";
 import { RootState } from "../src/store/store";
+import NavBar from "../src/components/NavBar";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -53,21 +54,7 @@ const Home = () => {
       {selectedChat ? (
         <>
           <div className="relative">
-            <div className="topbar">
-              <div className="container1">
-                <div className="navbar1">
-                  <h3>Filter by Title / Order ID</h3>
-                  <input
-                    type="text"
-                    placeholder="Start typing to search"
-                    className="search-bar"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                </div>
-              </div>
-              <hr className="hr-line" />
-            </div>
+            <NavBar search={search} setSearch={setSearch} isFullWidth={false} />
             <div className="content1">
               {filteredChats.map((chat: Details) => (
                 <ListItem
@@ -95,21 +82,7 @@ const Home = () => {
         </>
       ) : (
         <div className="relative">
-          <div className="topbar">
-            <div className="container">
-              <div className="navbar">
-                <h3>Filter by Title / Order ID</h3>
-                <input
-                  type="text"
-                  placeholder="Start typing to search"
-                  className="search-bar"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </div>
-            </div>
-            <hr className="hr-line" />
-          </div>
+          <NavBar search={search} setSearch={setSearch} isFullWidth={true} />
           <div className="content">
             {filteredChats.map((chat: Details) => (
               <ListItem
