@@ -169,18 +169,23 @@ const SingleChat = ({ chat, details }: Props) => {
   return (
     <div className="bg-back h-screen">
       <div className="topbar flex items-center justify-between h-96">
-        <Image
-          className="ml-4"
-          src={details?.imageURL}
-          alt="Profile"
-          width={50}
-          height={50}
-        />
+        <div className="logo">
+          <Image
+            className="ml-4"
+            src={details?.imageURL}
+            alt="Profile"
+            width={50}
+            height={50}
+          />
+        </div>
         <h2 className="text-2xl font-semibold text-gray-800 ml-4">
           {details?.title}
         </h2>
         <div className="mr-4">
-          <RxCross2 className="cancel cursor-pointer" onClick={() => router.push(`/`)} />
+          <RxCross2
+            className="cancel cursor-pointer"
+            onClick={() => router.push(`/`)}
+          />
         </div>
       </div>
       <div className="max-w-30 overflow-scroll p-4">
