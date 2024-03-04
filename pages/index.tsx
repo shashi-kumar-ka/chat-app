@@ -31,7 +31,7 @@ const Home = () => {
 
   useEffect(() => {
     if (id) {
-      const selectedChat = chats.find((chat) => chat.id === Number(id));
+      const selectedChat = chats.find((chat: { id: number; }) => chat.id === Number(id));
       setSelectedChat(selectedChat || null);
     } else {
       setSelectedChat(null);
@@ -69,7 +69,7 @@ const Home = () => {
           </div>
 
           <div className="right-bar">
-            {chats.map((chat) => (
+            {chats.map((chat: Details) => (
               <div key={chat.id} onClick={() => handleChatClick(chat)}></div>
             ))}
             {selectedChat && (
